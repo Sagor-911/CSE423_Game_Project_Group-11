@@ -60,6 +60,30 @@ ceiling_velocity = -5.0
 collapse_start_time = 0
 debris = []
 
+# Apu Random brick 
+random_bricks = []
+brick_spawn_time = 0
+BRICK_SPAWN_INTERVAL = 3
+brick_fall_stop_end_time = 0
+
+#Apu camera
+def setupCamera():
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(fovY, 1920 / 1080, 0.1, 1500)
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+
+    if first_person:
+        eyeX = player_pos[0]
+        eyeY = player_pos[1]
+        eyeZ = player_pos[2] + 35
+        centerX = player_pos[0] + math.cos(math.radians(player_angle)) * 10
+        centerY = player_pos[1] + math.sin(math.radians(player_angle)) * 10
+        centerZ = player_pos[2] + 35
+        gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 0, 1)
+    else:
+        gluLookAt(camera_pos[0], camera_pos[1], camera_pos[2], 0, 0, 0, 0, 0, 1)
 
 # -----fucntions::
 def reset_game():
