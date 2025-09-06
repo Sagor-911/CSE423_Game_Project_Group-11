@@ -21,7 +21,7 @@ player_speed = 6.0
 player_radius = 30.0
 
 bullets = []
-bullet_speed = 50.0
+bullet_speed = 500.0
 bullet_size = 12.0
 bullets_missed = 0
 max_missed = 10
