@@ -168,6 +168,9 @@ def draw_player():
 
 def draw_treasure(treasure):
     current_time = time.time()
+    # Simran Zaman Mayabi: Special treasure open with only key
+    if treasure['special'] and not (has_special_key or cheat_mode or current_time < special_treasures_visible_end_time):
+        return
     # Al-amin Sagor: Cheat mode has to see only key for open special treasure
     glPushMatrix()
     glTranslatef(treasure['pos'][0], treasure['pos'][1], treasure['pos'][2])
@@ -325,6 +328,12 @@ def update_game():
         player_pos[2] += jump_velocity
         player_pos[0] += player_velocity[0]
         player_pos[1] += player_velocity[1]
+        # Simran Zaman Mayabi: Through the wall or jump at a time
+        if player_pos[2] <= 10:
+            player_pos[2] = 10
+            jump_velocity = 0
+            is_jumping = False
+            player_velocity = [0.0, 0.0]
 
     if power_up_active and current_time > power_up_end_time:
         power_up_active = False
@@ -335,6 +344,9 @@ def update_game():
         dy = player_pos[1] - special_key_pos[1]
         if math.hypot(dx, dy) < 20:
             has_special_key = True
+            # Simran Zaman Mayabi: when special treasure increase for 5s
+            special_treasures_visible_end_time = current_time + 10
+            special_key_pos = [10000, 10000, 10000]
 
     for treasure in treasures[:]:
         dx = player_pos[0] - treasure['pos'][0]
@@ -443,6 +455,9 @@ def showScreen():
         draw_text(10, 960, "Special Treasure requires key!")
     
     current_time = time.time()
+    # Simran Zaman Mayabi: when special treasure increase for 5s
+    if has_special_key and current_time < special_treasures_visible_end_time:
+        draw_text(10, 930, "Special Treasures are visible for 10s!")
     
     if cheat_mode:
         draw_text(10, 900, "Cheat Mode: Activated!")
