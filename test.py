@@ -47,6 +47,7 @@ ceiling_height = 100.0
 ceiling_velocity = -5.0
 collapse_start_time = 0
 debris = []
+
 # MD Saidul Islam Apu: Random brick fall variables
 random_bricks = []
 brick_spawn_time = 0
@@ -148,12 +149,12 @@ def draw_player():
     # Hands
     glColor3f(0.8, 0.5, 0.2)
     glPushMatrix()
-    glTranslatef(0, 12, 10)
+    glTranslatef(0, 12, 10)  # Y-axis is sideways
     glutSolidCube(5)
     glPopMatrix()
 
     glPushMatrix()
-    glTranslatef(0, -12, 10)
+    glTranslatef(0, -12, 10)  # opposite side
     glutSolidCube(5)
     glPopMatrix()
 
@@ -174,9 +175,10 @@ def draw_player():
 def draw_treasure(treasure):
     current_time = time.time()
     # Simran Zaman Mayabi: Special treasure open with only key
+    # Al-amin Sagor: Cheat mode has to see only key for open special treasure
     if treasure['special'] and not (has_special_key or cheat_mode or current_time < special_treasures_visible_end_time):
         return
-    # Al-amin Sagor: Cheat mode has to see only key for open special treasure
+
     glPushMatrix()
     glTranslatef(treasure['pos'][0], treasure['pos'][1], treasure['pos'][2])
 
@@ -327,6 +329,7 @@ def update_game():
                 'size': random.uniform(5, 15),
                 'velocity': random.uniform(-10, -5)
             })
+
     # MD SAIDUL ISLAM APU: Stop random bricks when cheat mode is on
     if not cheat_mode and current_time < brick_fall_stop_end_time:
         pass
@@ -355,6 +358,7 @@ def update_game():
             'velocity': random.uniform(-8, -4)
         })
         brick_spawn_time = current_time
+
     if is_jumping or player_pos[2] > 10:
         jump_velocity += gravity
         player_pos[2] += jump_velocity
@@ -461,7 +465,7 @@ def setupCamera():
     gluPerspective(fovY, 1920 / 1080, 0.1, 1500)
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
-    #Saidul Islam Apu
+
     if first_person:
         eyeX = player_pos[0]
         eyeY = player_pos[1]
@@ -472,7 +476,6 @@ def setupCamera():
         gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, 0, 0, 1)
     else:
         gluLookAt(camera_pos[0], camera_pos[1], camera_pos[2], 0, 0, 0, 0, 0, 1)
-
 
 def showScreen():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
